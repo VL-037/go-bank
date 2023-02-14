@@ -16,7 +16,7 @@ INSERT INTO accounts (
     currency
 ) VALUES (
     $1, $2, $3
-) RETURNING id, created_by, created_at, updated_by, updated_at, mark_for_delete, owner, balance, currency
+) RETURNING id, owner, balance, currency, created_by, created_at, updated_by, updated_at, mark_for_delete
 `
 
 type CreateAccountParams struct {
@@ -30,14 +30,14 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (A
 	var i Account
 	err := row.Scan(
 		&i.ID,
+		&i.Owner,
+		&i.Balance,
+		&i.Currency,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.Owner,
-		&i.Balance,
-		&i.Currency,
 	)
 	return i, err
 }
@@ -53,7 +53,7 @@ func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
 }
 
 const getAccount = `-- name: GetAccount :one
-SELECT id, created_by, created_at, updated_by, updated_at, mark_for_delete, owner, balance, currency FROM accounts
+SELECT id, owner, balance, currency, created_by, created_at, updated_by, updated_at, mark_for_delete FROM accounts
 WHERE id = $1
 LIMIT 1
 `
@@ -63,20 +63,20 @@ func (q *Queries) GetAccount(ctx context.Context, id int64) (Account, error) {
 	var i Account
 	err := row.Scan(
 		&i.ID,
+		&i.Owner,
+		&i.Balance,
+		&i.Currency,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.Owner,
-		&i.Balance,
-		&i.Currency,
 	)
 	return i, err
 }
 
 const listAccounts = `-- name: ListAccounts :many
-SELECT id, created_by, created_at, updated_by, updated_at, mark_for_delete, owner, balance, currency FROM accounts
+SELECT id, owner, balance, currency, created_by, created_at, updated_by, updated_at, mark_for_delete FROM accounts
 ORDER BY id
 LIMIT $1
 OFFSET $2
@@ -98,14 +98,14 @@ func (q *Queries) ListAccounts(ctx context.Context, arg ListAccountsParams) ([]A
 		var i Account
 		if err := rows.Scan(
 			&i.ID,
+			&i.Owner,
+			&i.Balance,
+			&i.Currency,
 			&i.CreatedBy,
 			&i.CreatedAt,
 			&i.UpdatedBy,
 			&i.UpdatedAt,
 			&i.MarkForDelete,
-			&i.Owner,
-			&i.Balance,
-			&i.Currency,
 		); err != nil {
 			return nil, err
 		}
@@ -124,7 +124,7 @@ const updateAccount = `-- name: UpdateAccount :one
 UPDATE accounts
 SET balance = $2
 WHERE id = $1
-RETURNING id, created_by, created_at, updated_by, updated_at, mark_for_delete, owner, balance, currency
+RETURNING id, owner, balance, currency, created_by, created_at, updated_by, updated_at, mark_for_delete
 `
 
 type UpdateAccountParams struct {
@@ -137,14 +137,14 @@ func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) (A
 	var i Account
 	err := row.Scan(
 		&i.ID,
+		&i.Owner,
+		&i.Balance,
+		&i.Currency,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.Owner,
-		&i.Balance,
-		&i.Currency,
 	)
 	return i, err
 }

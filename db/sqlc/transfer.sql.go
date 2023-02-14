@@ -16,7 +16,7 @@ INSERT INTO transfers (
     amount
 ) VALUES (
     $1, $2, $3
-) RETURNING id, created_by, created_at, updated_by, updated_at, mark_for_delete, from_account_id, to_account_id, amount
+) RETURNING id, from_account_id, to_account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
 `
 
 type CreateTransferParams struct {
@@ -30,14 +30,14 @@ func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParams) 
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
+		&i.FromAccountID,
+		&i.ToAccountID,
+		&i.Amount,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.FromAccountID,
-		&i.ToAccountID,
-		&i.Amount,
 	)
 	return i, err
 }
@@ -53,7 +53,7 @@ func (q *Queries) DeleteTransfer(ctx context.Context, id int64) error {
 }
 
 const getTransfer = `-- name: GetTransfer :one
-SELECT id, created_by, created_at, updated_by, updated_at, mark_for_delete, from_account_id, to_account_id, amount FROM transfers
+SELECT id, from_account_id, to_account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete FROM transfers
 WHERE id = $1
 LIMIT 1
 `
@@ -63,20 +63,20 @@ func (q *Queries) GetTransfer(ctx context.Context, id int64) (Transfer, error) {
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
+		&i.FromAccountID,
+		&i.ToAccountID,
+		&i.Amount,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.FromAccountID,
-		&i.ToAccountID,
-		&i.Amount,
 	)
 	return i, err
 }
 
 const listTransfers = `-- name: ListTransfers :many
-SELECT id, created_by, created_at, updated_by, updated_at, mark_for_delete, from_account_id, to_account_id, amount FROM transfers
+SELECT id, from_account_id, to_account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete FROM transfers
 ORDER BY id
 LIMIT $1
 OFFSET $2
@@ -98,14 +98,14 @@ func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParams) ([
 		var i Transfer
 		if err := rows.Scan(
 			&i.ID,
+			&i.FromAccountID,
+			&i.ToAccountID,
+			&i.Amount,
 			&i.CreatedBy,
 			&i.CreatedAt,
 			&i.UpdatedBy,
 			&i.UpdatedAt,
 			&i.MarkForDelete,
-			&i.FromAccountID,
-			&i.ToAccountID,
-			&i.Amount,
 		); err != nil {
 			return nil, err
 		}
@@ -124,7 +124,7 @@ const updateTransfer = `-- name: UpdateTransfer :one
 UPDATE transfers
 SET amount = $2
 WHERE id = $1
-RETURNING id, created_by, created_at, updated_by, updated_at, mark_for_delete, from_account_id, to_account_id, amount
+RETURNING id, from_account_id, to_account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
 `
 
 type UpdateTransferParams struct {
@@ -137,14 +137,14 @@ func (q *Queries) UpdateTransfer(ctx context.Context, arg UpdateTransferParams) 
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
+		&i.FromAccountID,
+		&i.ToAccountID,
+		&i.Amount,
 		&i.CreatedBy,
 		&i.CreatedAt,
 		&i.UpdatedBy,
 		&i.UpdatedAt,
 		&i.MarkForDelete,
-		&i.FromAccountID,
-		&i.ToAccountID,
-		&i.Amount,
 	)
 	return i, err
 }

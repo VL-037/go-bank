@@ -14,13 +14,13 @@ CREATE TABLE "accounts" (
 )INHERITS ("base_entity");
 
 CREATE TABLE "entries" (
-  "account_id" bigint,
+  "account_id" bigint NOT NULL,
   "amount" bigint NOT NULL
 )INHERITS ("base_entity");
 
 CREATE TABLE "transfers" (
-  "from_account_id" bigint,
-  "to_account_id" bigint,
+  "from_account_id" bigint NOT NULL,
+  "to_account_id" bigint NOT NULL,
   "amount" bigint NOT NULL
 )INHERITS ("base_entity");
 

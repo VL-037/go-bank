@@ -37,7 +37,7 @@ type Entry struct {
 	UpdatedBy     sql.NullString `json:"updated_by"`
 	UpdatedAt     time.Time      `json:"updated_at"`
 	MarkForDelete bool           `json:"mark_for_delete"`
-	AccountID     sql.NullInt64  `json:"account_id"`
+	AccountID     int64          `json:"account_id"`
 	// can be negative or positive
 	Amount int64 `json:"amount"`
 }
@@ -49,8 +49,8 @@ type Transfer struct {
 	UpdatedBy     sql.NullString `json:"updated_by"`
 	UpdatedAt     time.Time      `json:"updated_at"`
 	MarkForDelete bool           `json:"mark_for_delete"`
-	FromAccountID sql.NullInt64  `json:"from_account_id"`
-	ToAccountID   sql.NullInt64  `json:"to_account_id"`
+	FromAccountID int64          `json:"from_account_id"`
+	ToAccountID   int64          `json:"to_account_id"`
 	// mmust be positive
 	Amount int64 `json:"amount"`
 }

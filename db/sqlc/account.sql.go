@@ -79,7 +79,7 @@ const getAccountForUpdate = `-- name: GetAccountForUpdate :one
 SELECT id, owner, balance, currency, created_by, created_at, updated_by, updated_at, mark_for_delete FROM accounts
 WHERE id = $1
 LIMIT 1
-FOR UPDATE
+FOR NO KEY UPDATE
 `
 
 func (q *Queries) GetAccountForUpdate(ctx context.Context, id int64) (Account, error) {

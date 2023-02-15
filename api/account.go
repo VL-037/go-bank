@@ -62,7 +62,7 @@ type listAccountRequest struct {
 	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
-func (server *Server) listAccount(ctx *gin.Context) {
+func (server *Server) listAccounts(ctx *gin.Context) {
 	var req listAccountRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
@@ -76,10 +76,6 @@ func (server *Server) listAccount(ctx *gin.Context) {
 
 	accounts, err := server.store.ListAccounts(ctx, arg)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}

@@ -11,8 +11,26 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
+
+    # google: GitHub action postgres
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: go_bank
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
+
+      - name: Run migrations
+        uses: make migrateup
 
       - name: Set up Go
         uses: actions/setup-go@v3

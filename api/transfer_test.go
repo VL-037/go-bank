@@ -338,7 +338,7 @@ func TestCreateTransferAPI(t *testing.T) {
 			},
 		},
 		{
-			name: "INTERNAL_SERVER_ERROR - Transfer Tx",
+			name: "INTERNAL_SERVER_ERROR - TransferTx Error",
 			body: transferRequest{
 				FromAccountID: account1.ID,
 				ToAccountID:   account2.ID,
@@ -362,7 +362,7 @@ func TestCreateTransferAPI(t *testing.T) {
 					Return(account2, nil)
 				store.EXPECT().
 					TransferTx(gomock.Any(), gomock.Eq(arg)).
-					Times(1).Return(db.TransferTxResponse{}, sql.ErrConnDone)
+					Times(1).Return(db.TransferTxResponse{}, sql.ErrTxDone)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusInternalServerError, recorder.Code)

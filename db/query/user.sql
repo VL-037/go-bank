@@ -1,10 +1,11 @@
 -- name: CreateUser :one
-INSERT INTO users (owner,
-                   balance,
-                   currency)
-VALUES ($1, $2, $3) RETURNING *;
+INSERT INTO users (username,
+                   hashed_password,
+                   full_name,
+                   email)
+VALUES ($1, $2, $3, $4) RETURNING *;
 
--- name: GetAccount :one
+-- name: GetUser :one
 SELECT *
 FROM users
-WHERE id = $1 LIMIT 1;
+WHERE username = $1 LIMIT 1;

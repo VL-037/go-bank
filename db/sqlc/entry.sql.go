@@ -10,12 +10,9 @@ import (
 )
 
 const createEntry = `-- name: CreateEntry :one
-INSERT INTO entries (
-  account_id,
-  amount
-) VALUES (
-  $1, $2
-) RETURNING id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
+INSERT INTO entries (account_id,
+                     amount)
+VALUES ($1, $2) RETURNING id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
 `
 
 type CreateEntryParams struct {
@@ -40,7 +37,8 @@ func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry
 }
 
 const getEntry = `-- name: GetEntry :one
-SELECT id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete FROM entries
+SELECT id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
+FROM entries
 WHERE id = $1 LIMIT 1
 `
 
@@ -61,10 +59,10 @@ func (q *Queries) GetEntry(ctx context.Context, id int64) (Entry, error) {
 }
 
 const listEntries = `-- name: ListEntries :many
-SELECT id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete FROM entries
+SELECT id, account_id, amount, created_by, created_at, updated_by, updated_at, mark_for_delete
+FROM entries
 WHERE account_id = $1
-ORDER BY id
-LIMIT $2
+ORDER BY id LIMIT $2
 OFFSET $3
 `
 

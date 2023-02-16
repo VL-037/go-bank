@@ -45,3 +45,16 @@ type Transfer struct {
 	UpdatedAt     time.Time      `json:"updated_at"`
 	MarkForDelete bool           `json:"mark_for_delete"`
 }
+
+type User struct {
+	Username          string         `json:"username"`
+	HashedPassword    string         `json:"hashed_password"`
+	FullName          string         `json:"full_name"`
+	Email             string         `json:"email"`
+	PasswordUpdatedAt time.Time      `json:"password_updated_at"`
+	CreatedBy         sql.NullString `json:"created_by"`
+	CreatedAt         time.Time      `json:"created_at"`
+	UpdatedBy         sql.NullString `json:"updated_by"`
+	UpdatedAt         time.Time      `json:"updated_at"`
+	MarkForDelete     bool           `json:"mark_for_delete"`
+}

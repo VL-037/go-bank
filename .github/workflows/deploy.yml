@@ -25,6 +25,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Load secret and save to app.env
+        run: aws secretsmanager get-secret-value --secret-id go-bank --query SecretString --output text | jq --raw-output 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
+        # no need to install aws since already installed in previous step
+        # no need to install jq since it's available in ubuntu image
+
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}

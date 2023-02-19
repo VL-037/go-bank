@@ -1,5 +1,5 @@
 postgres:
-	docker run -d --name postgres_go_bank -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
+	docker run -d --name postgres_go_bank --network go_bank_network -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:15-alpine
 drop-postgres:
 	docker stop postgres_go_bank
 	docker rm postgres_go_bank

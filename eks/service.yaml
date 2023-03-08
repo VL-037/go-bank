@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: go-bank-api-service
+spec:
+  selector:
+    app: go-bank-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080 # from deployment.yaml
+  type: LoadBalancer # show external IP
